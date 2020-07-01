@@ -1,0 +1,22 @@
+{
+  "autoload": {
+    "psr-4": {
+      "EFINANS\\": "src"
+    }
+  },
+  "homepage": "https://github.com/muhittingulap/qnbfinansbank",
+  "license": "MIT",
+  "name": "muhittingulap/qnbfinansbank",
+  "keywords": ["efatura", "earşiv", "qnb","finansbank"],
+  "description": "QNB Finansbank E-Fatura ve E-Arşiv Api",
+  "authors": [
+    {
+      "name": "Muhittin GÜLAP",
+      "email": "gulapmuhittin@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.0"
+  }
+}
