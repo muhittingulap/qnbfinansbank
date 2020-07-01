@@ -1,14 +1,23 @@
 {
+  "name": "muhittingulap/qnbfinansbank",
+  "license": "MIT",
+  "type": "library",
+  "homepage": "https://github.com/muhittingulap/qnbfinansbank",
+  "keywords": ["efatura", "earşiv", "qnb","finansbank","php","api"],
+  "description": "QNB Finansbank E-Fatura ve E-Arşiv Api",
   "autoload": {
     "psr-4": {
       "EFINANS\\": "src"
-    }
+    },
+    "classmap": [
+      "src/index.php"
+    ]
   },
-  "homepage": "https://github.com/muhittingulap/qnbfinansbank",
-  "license": "MIT",
-  "name": "muhittingulap/qnbfinansbank",
-  "keywords": ["efatura", "earşiv", "qnb","finansbank"],
-  "description": "QNB Finansbank E-Fatura ve E-Arşiv Api",
+  "autoload-dev": {
+    "psr-4": {
+      "EFINANS\\": "src"
+    }
+  },   
   "authors": [
     {
       "name": "Muhittin GÜLAP",
