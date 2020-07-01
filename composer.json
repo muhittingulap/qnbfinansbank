@@ -10,7 +10,7 @@
       "EFINANS\\": "src"
     },
     "classmap": [
-      "src/index.php"
+      "index.php"
     ]
   },
   "autoload-dev": {
