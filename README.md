@@ -1,5 +1,4 @@
 <p align="center"><img src="https://raw.githubusercontent.com/muhittingulap/qnbfinansbank/master/images/80864283-581ea400-8c8a-11ea-8bdd-ea37da892af8.jpg" width="300"></p>
-<p align="center"><img src="https://raw.githubusercontent.com/muhittingulap/qnbfinansbank/master/images/gib_400px.png" width="100"></p>
 
 <h3 align="center">E-Fatura / E-Arşiv<br>QNB Finansbank</h3>
 
