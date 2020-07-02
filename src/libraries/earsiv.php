@@ -118,7 +118,7 @@ class earsiv extends config
         return $this;
     }
 
-    public function getFaturaNo($prefix="")
+    public function getFaturaNo($prefix = "")
     {
         try {
             $this->input = array(

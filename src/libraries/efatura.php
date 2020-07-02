@@ -132,7 +132,7 @@ class efatura extends config
         exit;
     }
 
-    public function gidenfaturaDurumSorgula($belgeOid="")
+    public function gidenBelgeDurumSorgula($belgeOid="")
     {
         try {
             $this->parametre = array(
@@ -147,7 +147,7 @@ class efatura extends config
         return $this->return;
     }
 
-    public function gidenfaturalariListele()
+    public function gidenBelgeleriListele()
     {
         try {
             $this->parametre = array(
@@ -162,43 +162,10 @@ class efatura extends config
         } catch (Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
-
         return $r;
     }
 
-    public function gelenBelgeDurumSorgula($ettn = "")
-    {
-        /* example
-
-         [return] => stdClass Object
-                (
-                    [alimTarihi] => 20200616143630561
-                    [belgeNo] => TMA2020000000001
-                    [ettn] => 6EBAD91C-C88D-4A36-92FF-95AFA143BA29
-                    [yanitDetayi] =>
-                    [yanitDurumu] => -1
-                    [yanitGonderimCevabiKodu] => 0
-                    [yanitGonderimDurumu] => -1
-                )
-
-        */
-        try {
-            $this->parametre = array(
-                "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
-                "ettn" => $ettn,
-                "belgeTuru" => "FATURA",
-            );
-            $r = $this->api->gelenBelgeDurumSorgula($this->parametre);
-
-        } catch (Exception $e) {
-            $this->errors[__FUNCTION__][0] = $e;
-        }
-
-
-        return $r;
-    }
-
-    public function gelenFaturalariListele()
+    public function gelenBelgeleriListele()
     {
         /* example response
          [0] => stdClass Object
@@ -243,16 +210,9 @@ class efatura extends config
         return (int)$r->return;
     }
 
-    public function getReturn()
-    {
-        /* çalıştırılan methoddaki sonucu döner*/
-        return $this->return;
-    }
-
     public function getErrors()
     {
         /* çalıştırılan methoddaki hataları döner*/
         return $this->errors;
     }
-
 }
