@@ -64,7 +64,7 @@ E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki 
     /* hazırlanan başlangıç datasını set ediyoruz */
     $data->setStartData($veri);
 
-#####**Parameters:**
+**Parameters:**
 
 | Parametre      | Açıklama |
 | ------         | -------- |
@@ -86,7 +86,7 @@ Her Bir Notu set ediyoruz. Notlar için dökümanı inceleyiniz.
     );
     $data->setAddNote($veri);
 
-#####**Parameters:**
+**Parameters:**
 
 | Parametre                    | Açıklama |
 | ---------------------------- | -------- |
@@ -121,7 +121,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
     );    
     $data->setSupplierCustomerParty('Supplier', $veri);
 
-#####**Parameters:**
+**Parameters:**
 
 | Parametre                    | Açıklama |
 | ---------------------------- | -------- |
@@ -152,7 +152,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
               
        $data->setPerson('Customer', $veri);
 
-#####**Parameters:**
+**Parameters:**
 
 | Parametre                    | Açıklama |
 | ---------------------------- | -------- |
@@ -172,7 +172,7 @@ Bilgi notu şeklinde girilemsi zorunlu değildir.
        );
        $data->setPaymentTerms($veri);
 
-#####**Parameters:**
+**Parameters:**
 
 | Parametre                    | Açıklama |
 | ---------------------------- | -------- |
