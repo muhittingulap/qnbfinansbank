@@ -131,14 +131,20 @@ class efatura extends config
         print $this->xmlData;
         exit;
     }
-    public function gidenfaturaDurumSorgula($belgeOid)
+
+    public function gidenfaturaDurumSorgula($belgeOid="")
     {
-        $this->parametre = array(
-            "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
-            "belgeOid" => $belgeOid,
-        );
-        $r = $this->api->gidenBelgeDurumSorgula($this->parametre);
-        return $r;
+        try {
+            $this->parametre = array(
+                "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
+                "belgeOid" => $belgeOid,
+            );
+            $r = $this->api->gidenBelgeDurumSorgula($this->parametre);
+            $this->return = $r->return;
+        } catch (Exception $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
     }
 
     public function gidenfaturalariListele()
