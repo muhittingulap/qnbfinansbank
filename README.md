@@ -42,7 +42,7 @@ QNB Finansbank web servisleri için PHP ile yazılmış olan bu kütüphane ile 
     
 ## Bildirilecek Datanın Hazırlanması
 
-##### - Başlangıç datasının hazırlanması
+#### - Başlangıç datasının hazırlanması
 
 E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki kodda görülen şekilde başlangıç datası oluşturulur ve ardından eklemeler yapılarak son data çıktısı alınacatır.Bu Alınan data daha sonrasında ister E-Arşiv istersenizde E-Faturaya gönderebileceksiniz.
 
@@ -74,7 +74,7 @@ E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki 
 | IssueDate      | Fatura Tarihi YYYY-MM-DD şeklinde girilmelidir. örn: 2020-07-01         |
 | IssueTime      | Fatura Saati HH:ii:ss  şeklinde girilmelidir. 20:18:00       |
 
-##### - Not Bilgilerinin Eklenmesi
+#### - Not Bilgilerinin Eklenmesi
 
 Her Bir Notu set ediyoruz. Notlar için dökümanı inceleyiniz.
 
@@ -94,7 +94,7 @@ Her Bir Notu set ediyoruz. Notlar için dökümanı inceleyiniz.
 | #EFN_SERINO_TERCIHI#EF#      | Bu not E-Fatura No otomatik üretilmesi istenmesi durumunda başlangıç seri no maksimum 2 hane gönderilmelidir. Bu örnekte : EF |
 
 
-##### - Satıcı ve Alıcı Bilgilerinin Eklenmesi
+#### - Satıcı ve Alıcı Bilgilerinin Eklenmesi
 
 Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve aşağıdaki 'Supplier' yazan yeri değiştirip set etmelisiniz.
 
@@ -139,7 +139,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
 | PostalZone                   | Posta Kodu bilgisi|
 | CountryName                  | Ülke bilgisi|
 
-##### - Satıcı ve Alıcı Personel  Bilgilerinin Eklenmesi
+#### - Satıcı ve Alıcı Personel  Bilgilerinin Eklenmesi
 
 'Customer' için mutlaka set edin çünkü TC kimlik no olduğunda zorunludur. Supplier için zorunlu değil ama girebilirsiniz
 
@@ -160,7 +160,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
 | FamilyName                   | Soyad bilgisi |
 
 
-##### - Ödeme Koşulları Girilmesi 
+#### - Ödeme Koşulları Girilmesi 
 
 Bilgi notu şeklinde girilemsi zorunlu değildir.
 
@@ -180,7 +180,7 @@ Bilgi notu şeklinde girilemsi zorunlu değildir.
 | PaymentDueDate               | Son Ödeme Tarihi bilgisi. örn: 2020-07-30 |
 
 
-##### - Fatura Satırlarının Girilmesi 
+#### - Fatura Satırlarının Girilmesi 
 
 Bu adım açıklamasının hazırlanması devam etmektetir.
 
