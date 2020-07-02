@@ -5,6 +5,7 @@
 <p align="center">QNB Finansbank E-Fatura ve E-Arşiv PHP Api</p>
 
 <p align="center">
+  <a href="https://packagist.org/packages/ahmett/payconn-qnbfinansbank"><img src="https://poser.pugx.org/muhittingulap/qnbfinansbank/v/stable.svg" alt="Latest Stable Version">
   <a href="https://packagist.org/packages/muhittingulap/qnbfinansbank"><img src="https://poser.pugx.org/muhittingulap/qnbfinansbank/d/total.svg" alt="Total Downloads"></a>
   <a href="https://packagist.org/packages/muhittingulap/qnbfinansbank"><img src="https://poser.pugx.org/muhittingulap/qnbfinansbank/license.svg" alt="License"></a>
 </p>
