@@ -37,6 +37,8 @@ Dokümantasyon dosyalarına ulaşmak için [tıklayınız.](https://www.qnbefina
 
 * **setEArsiv()** : E-Arşiv bildirme işlemi yapabilirsiniz.
 * **getFaturaNo()** : Portaldaki en son gönderilmiş fatura numaranıza göre sonraki fatura numarasını üretir.
+* **getFaturaSorgula()** : Fatura detay görüntüleme servisidir. Faturanın PDF/HTML bilgisi ve detayları döner.
+* **callFaturaIptalEt()** : Fatura iptal etme servisidir.
 
 ## Projenizde Kullanma
 
@@ -79,7 +81,7 @@ E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki 
 
 #### - Not Bilgilerinin Eklenmesi
 
-Her Bir Notu set ediyoruz. Notlar için dökümanı inceleyiniz.
+Her Bir Notu set ediyoruz. Notlar için dokümanı inceleyiniz.
 
     <?php     
     
@@ -93,7 +95,7 @@ Her Bir Notu set ediyoruz. Notlar için dökümanı inceleyiniz.
 
 | Parametre                    | Açıklama |
 | ---------------------------- | -------- |
-| Gönderim Şekli: ELEKTRONIK   | Bu not E-Arşiv için zorunludur. Diğer not lar için dökümantasyonu inceleyiniz. |
+| Gönderim Şekli: ELEKTRONIK   | Bu not E-Arşiv için zorunludur. Diğer not lar için dokümantasyonu inceleyiniz. |
 | #EFN_SERINO_TERCIHI#EF#      | Bu not E-Fatura No otomatik üretilmesi istenmesi durumunda başlangıç seri no maksimum 2 hane gönderilmelidir. Bu örnekte : EF |
 
 
@@ -142,7 +144,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
 | PostalZone                   | Posta Kodu bilgisi|
 | CountryName                  | Ülke bilgisi|
 
-#### - Satıcı ve Alıcı Personel  Bilgilerinin Eklenmesi
+#### - Satıcı ve Alıcı Personel Bilgilerinin Eklenmesi
 
 'Customer' için mutlaka set edin çünkü TC kimlik no olduğunda zorunludur. Supplier için zorunlu değil ama girebilirsiniz
 
@@ -185,8 +187,83 @@ Bilgi notu şeklinde girilemsi zorunlu değildir.
 
 #### - Fatura Satırlarının Girilmesi 
 
-Bu adım açıklamasının hazırlanması devam etmektetir.
+Bu adım da her satır için bu işlemi tekrarlamanız vey bir döngü içerisinde tüm fatura adımlarınızı set etmeniz gerekmektedir.
 
+    <?php     
+    
+        
+    $veri = array(
+        "ID" => "", 
+        "InvoicedQuantity" => "",
+        "LineExtensionAmount" => "",
+        "BaseAmount" => 0,
+        "TaxAmount" => 0,
+        "TaxSubtotal" => array(
+            0 => array(
+                "TaxableAmount" => 0,
+                "TaxAmount" => 0,
+                "Percent" => 0,
+                "TaxSchemeName" => "KDV",
+                "TaxSchemeTaxTypeCode" => "0015",
+            ), 
+            1 => array(
+                "TaxableAmount" => 0,
+                "TaxAmount" => 0,
+                "Percent" => 0,
+                "TaxSchemeName" => "Özel İletişim Vergisi",
+                "TaxSchemeTaxTypeCode" => "4080",
+            ),
+        ),
+        "ItemName" => "",
+        "PriceAmount" => 0,
+    );
+    
+    $data->setInvoiceLine($veri);
+
+**Parameters:**
+
+| Parametre                                   | Açıklama |
+| --------------------------------------------| -------- |
+| ID                                          | Satır sira no veya benzersiz ID her satır için uniq olmalı |
+| InvoicedQuantity                            | Ürün Adet |
+| LineExtensionAmount                         | Satır toplam vergiler hariç |
+| BaseAmount                                  | Satır toplam vergiler dahil |
+| TaxAmount                                   | Vergiler toplam tutarı |
+| ItemName                                    | Satılan ürün adı |
+| PriceAmount                                 | Satır birim fiyat |
+| TaxSubtotal -> TaxableAmount                | Vergi toplam matrah |
+| TaxSubtotal -> TaxAmount                    | Vergi toplam tutarı |
+| TaxSubtotal -> Percent                      | Vergi Oranı |
+| TaxSubtotal -> TaxSchemeName                | Vergi başlığı |
+| TaxSubtotal -> TaxSchemeTaxTypeCode         | Vergi Kodu (dokümantasyon inceleyin) |
+
+
+#### - Datanın Son Halinin Alınması
+
+Bu adım da fatura satırlarından otomatik olarak  parasal toplamların ve vergisel toplamların heaplanıp, E-Arşiv ve E-Fatura ya gönderileck datanın son halinin, xml öncesi array datasının alıp bir değişkene atıyoruz ve artık bildirim aşamasına geçebiliriz.
+
+    <?php  
+       
+    $qnb_data = $data->setTotals()->getData();
+
+
+## Servis Bağlantı İşlemleri (Hazırlanıyor..)
+
+Web servislerine bağlantı için TEST ve CANLI ortam username ve password bilgilerini tanımlıyoruz. Bu bilgiler qnbfinansbank tarafından alınır.
+
+## E-Fatura İşlemleri (Hazırlanıyor..)
+
+E-Faturaya bildirim işlemlerini yapabilmek için class ı çağırıyoruz ve set işlemlerine başlıyoruz.
+
+
+## E-Arşiv İşlemleri (Hazırlanıyor..)
+
+E-Arşiv bildirim işlemlerini yapabilmek için class ı çağırıyoruz ve set işlemlerine başlıyoruz.
+
+
+## Otomatik Bildirim İşlemleri (Hazırlanıyor..)
+
+E-Fatura veya E-Arşiv gönderisinin otomatik bir şekilde tespit edilip tek bir class üzerinden göndermek siterseniz aşağıdaki yöntemi kullanabilirsiniz.
 
 
 ## Destek

@@ -11,6 +11,10 @@ class earsiv extends config
     private $sube = "MERKEZ";
     private $kasa = "MERKEZ";
 
+    private $faturaUuid = "";
+    private $faturaNo = "";
+    private $belgeFormati = "";
+
     public function __construct()
     {
         parent::__construct();
@@ -91,6 +95,22 @@ class earsiv extends config
         return $this;
     }
 
+    public function setfaturaUuid($data = "")
+    {
+        $this->faturaUuid = $data;
+        return $this;
+    }
+    public function setfaturaNo($data = "")
+    {
+        $this->faturaNo = $data;
+        return $this;
+    }
+    public function setbelgeFormati($data = "")
+    {
+        $this->belgeFormati = $data;
+        return $this;
+    }
+
     private function setPrefix()
     {
         $vergino = $this->data["cac:AccountingCustomerParty"]["cac:Party"]["cac:PartyIdentification"]["cbc:ID"];
@@ -164,6 +184,48 @@ class earsiv extends config
 
             $r = $this->api->faturaOlustur($this->parametre);
             $this->return = $r->return;
+        } catch (Exception $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
+    }
+
+    public function getFaturaSorgula()
+    {
+        try {
+            $this->input = array(
+                "vkn" => $this->vergiTcKimlikNo,
+                "faturaUuid" => $this->faturaUuid,
+                "donenBelgeFormati" => $this->belgeFormati,
+            );
+
+            $this->parametre = array(
+                "input" => json_encode($this->input),
+            );
+
+            $r = $this->api->faturaSorgula($this->parametre);
+            $this->return=$r;
+        } catch (Exception $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
+    }
+
+    public function callFaturaIptalEt()
+    {
+        try {
+            $this->input = array(
+                "vkn" => $this->vergiTcKimlikNo,
+                "faturaUuid" => $this->faturaUuid,
+                "faturaNo" => $this->faturaNo,
+            );
+
+            $this->parametre = array(
+                "input" => json_encode($this->input),
+            );
+
+            $r = $this->api->faturaIptalEt($this->parametre);
+            $this->return=$r->return;
         } catch (Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }

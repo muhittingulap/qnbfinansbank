@@ -7,6 +7,7 @@ use EFINANS\Config\config;
 class efatura extends config
 {
     private $data = array();
+    private $belgeFormati = "";
 
     public function __construct()
     {
@@ -61,6 +62,12 @@ class efatura extends config
 
         $this->setDataXml(); /* xxml datası oluşturuluyor.*/
 
+        return $this;
+    }
+
+    public function setbelgeFormati($data = "PDF")
+    {
+        $this->belgeFormati = $data;
         return $this;
     }
 
@@ -120,17 +127,6 @@ class efatura extends config
         return $this->return;
     }
 
-    public function getXmlData()
-    {
-        return $this->xmlData;
-    }
-
-    public function viewXmlData()
-    {
-        header("content-type:application/xml");
-        print $this->xmlData;
-        exit;
-    }
 
     public function gidenBelgeDurumSorgula($belgeOid="")
     {
@@ -141,6 +137,24 @@ class efatura extends config
             );
             $r = $this->api->gidenBelgeDurumSorgula($this->parametre);
             $this->return = $r->return;
+        } catch (Exception $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
+    }
+
+    public function gidenBelgeleriIndir($belgeOid="")
+    {
+        try {
+            $this->parametre = array(
+                "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
+                "belgeOidListesi" => $belgeOid,
+                "belgeTuru" => "FATURA",
+                "belgeFormati" => $this->belgeFormati,
+
+            );
+            $r = $this->api->gidenBelgeleriIndir($this->parametre);
+            $this->return = $r;
         } catch (Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
@@ -208,6 +222,18 @@ class efatura extends config
         }
 
         return (int)$r->return;
+    }
+
+    public function getXmlData()
+    {
+        return $this->xmlData;
+    }
+
+    public function viewXmlData()
+    {
+        header("content-type:application/xml");
+        print $this->xmlData;
+        exit;
     }
 
     public function getErrors()
