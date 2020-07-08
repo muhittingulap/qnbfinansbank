@@ -75,7 +75,7 @@ E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki 
 
 | Parametre      | Açıklama |
 | ------         | -------- |
-| ID             | Fatura numaranız 'TRA2020000000001' şeklinde boş bırakılması halinde finansbank tarafından otomatik oluşturulur. Finansbank'tan e-arşiv ve e-fatura için seri no belirleme için tıklayınız.??  |
+| ID             | Fatura numaranız 'TRA2020000000001' şeklinde boş bırakılması halinde finansbank tarafından otomatik oluşturulur. Finansbank'tan e-arşiv ve e-fatura için seri no belirleme için [tıklayınız.](https://github.com/muhittingulap/qnbfinansbank#e-fatura-ve-e-ar%C5%9Fiv-ek-methodlar)  |
 | ProfileID      | 'TICARIFATURA','TEMELFATURA' veya 'EARSIVFATURA' yazabilirsiniz. E-Arşiv içinbu bilgi boş olduğunda otomaik oluşturulur.         |
 | UUID           | Benzersiz işlem numarasıdır. Otomatik oluşturulması için yukarıda örnek kod bulunur.         |
 | IssueDate      | Fatura Tarihi YYYY-MM-DD şeklinde girilmelidir. örn: 2020-07-01         |
