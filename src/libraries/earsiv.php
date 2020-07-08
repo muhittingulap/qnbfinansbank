@@ -20,28 +20,16 @@ class earsiv extends config
         parent::__construct();
     }
 
-    public function setMode($mode = 0)
+    public function setConfig($config=array()){
+        $this->vergiTcKimlikNo = $config["vergiTcKimlikNo"];
+        $this->username = $config["username"];
+        $this->password = $config["password"];
+        $this->url = $config["url"];
+        return $this;
+    }
+
+    public function setStart()
     {
-        /* varsayılan olarak canlı moddur testte almak istenirse 2 gönderilmelidir.*/
-
-        if ($mode) $this->mode = $mode;
-
-        if ($this->mode == 1) {
-            /* canlı mod */
-            $this->vergiTcKimlikNo = "CANLI_VKN";
-            $this->username = "CANLI_USERNAME";
-            $this->password = "CANLI_PASSWORD";
-            $this->url = $this->earsiv_url;
-        }
-
-        if ($this->mode == 2) {
-            /* test mod */
-            $this->vergiTcKimlikNo = "TEST_VKN";
-            $this->username = "TEST_USERNAME";
-            $this->password = "TEST_PASSWORD";
-            $this->url = $this->earsiv_test_url;
-        }
-
         $this->soapUp(); /* soap başlatılıyor */
 
         return $this;
@@ -100,11 +88,13 @@ class earsiv extends config
         $this->faturaUuid = $data;
         return $this;
     }
+
     public function setfaturaNo($data = "")
     {
         $this->faturaNo = $data;
         return $this;
     }
+
     public function setbelgeFormati($data = "")
     {
         $this->belgeFormati = $data;

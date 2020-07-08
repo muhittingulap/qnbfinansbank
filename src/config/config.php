@@ -4,12 +4,6 @@ namespace EFINANS\Config;
 
 class config
 {
-    protected $efatura_test_url = "https://erpefaturatest.cs.com.tr:8043/efatura/ws/connectorService?wsdl";
-    protected $efaura_url = "https://efaturaconnector.efinans.com.tr/connector/ws/connectorService?wsdl";
-
-    protected $earsiv_test_url = "https://earsivtest.efinans.com.tr/earsiv/ws/EarsivWebService?wsdl";
-    protected $earsiv_url = "https://earsivconnector.efinans.com.tr/earsiv/ws/EarsivWebService?wsdl";
-
     protected $url = "";
 
     protected $username = "";
@@ -19,14 +13,12 @@ class config
     protected $context = "";
     protected $soapOptions = "";
     protected $errors = array();
+    protected $return = array();
 
     protected $api;
-    protected $mode = 1;
-
     protected $prefix = array();
 
     public function __construct() {
-
         $this->prefix = array(
             'cac:AccountingSupplierParty' => array(
                 'cac:Party' => array(
@@ -115,7 +107,41 @@ class config
                 ),
             ),
         );
+    }
 
+    public function setUsername($data = "")
+    {
+        $this->username = $data;
+        return $this;
+    }
+
+    public function setpassword($data = "")
+    {
+        $this->password = $data;
+        return $this;
+    }
+
+    public function setvergiTcKimlikNo($data = "")
+    {
+        $this->vergiTcKimlikNo = $data;
+        return $this;
+    }
+
+    public function setUrl($data = "")
+    {
+        $this->url = $data;
+        return $this;
+    }
+
+    public function getConfig()
+    {
+        $this->return=array(
+            "username" => $this->username,
+            "password" => $this->password,
+            "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
+            "url" => $this->url,
+        );
+        return $this->return;
     }
 
     protected function soapUp()

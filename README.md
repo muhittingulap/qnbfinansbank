@@ -22,6 +22,12 @@ Dokümantasyon dosyalarına ulaşmak için [tıklayınız.](https://www.qnbefina
 
     $ composer require muhittingulap/qnbfinansbank
     
+
+## Projenizde Kullanma
+
+    <?php     
+    include('vendor/autoload.php');
+    
 ## Desteklenen Yöntemler
 
 #### - E-Fatura
@@ -40,12 +46,8 @@ Dokümantasyon dosyalarına ulaşmak için [tıklayınız.](https://www.qnbefina
 * **getFaturaSorgula()** : Fatura detay görüntüleme servisidir. Faturanın PDF/HTML bilgisi ve detayları döner.
 * **callFaturaIptalEt()** : Fatura iptal etme servisidir.
 
-## Projenizde Kullanma
-
-    <?php     
-    include('vendor/autoload.php');
-    
-## Bildirilecek Datanın Hazırlanması
+     
+## Bildirilecek Datanın Hazırlanması (UBL)
 
 #### - Başlangıç datasının hazırlanması
 
@@ -187,11 +189,10 @@ Bilgi notu şeklinde girilemsi zorunlu değildir.
 
 #### - Fatura Satırlarının Girilmesi 
 
-Bu adım da her satır için bu işlemi tekrarlamanız vey bir döngü içerisinde tüm fatura adımlarınızı set etmeniz gerekmektedir.
+Bu adım da her satır için bu işlemi tekrarlamanız veya bir döngü içerisinde tüm fatura satırlarınızı set etmeniz gerekmektedir.
 
     <?php     
-    
-        
+            
     $veri = array(
         "ID" => "", 
         "InvoicedQuantity" => "",
@@ -224,7 +225,7 @@ Bu adım da her satır için bu işlemi tekrarlamanız vey bir döngü içerisin
 
 | Parametre                                   | Açıklama |
 | --------------------------------------------| -------- |
-| ID                                          | Satır sira no veya benzersiz ID her satır için uniq olmalı |
+| ID                                          | Satır sıra no veya benzersiz ID her satır için uniq olmalı |
 | InvoicedQuantity                            | Ürün Adet |
 | LineExtensionAmount                         | Satır toplam vergiler hariç |
 | BaseAmount                                  | Satır toplam vergiler dahil |
@@ -247,18 +248,176 @@ Bu adım da fatura satırlarından otomatik olarak  parasal toplamların ve verg
     $qnb_data = $data->setTotals()->getData();
 
 
-## Servis Bağlantı İşlemleri (Hazırlanıyor..)
+## Servis Bağlantı İşlemleri
 
-Web servislerine bağlantı için TEST ve CANLI ortam username ve password bilgilerini tanımlıyoruz. Bu bilgiler qnbfinansbank tarafından alınır.
+Web servislerine bağlantı için TEST veya CANLI ortam username ve password bilgilerini tanımlıyoruz. Bu bilgiler qnbfinansbank tarafından alınır.
 
-## E-Fatura İşlemleri (Hazırlanıyor..)
+    <?php  
+    
+    $config = new \EFINANS\Config\config();
+    
+    $options=$config->setUsername("CANLI_VEYA_TEST_USERNAME")
+    ->setpassword("CANLI_VEYA_TEST_USERNAME")
+    ->setvergiTcKimlikNo("CANLI_VEYA_TEST_VERGI_KIMLIKNO")
+    ->setUrl("CANLI_VEYA_TEST_URL")
+    ->getConfig();
+
+**Parameters:**
+
+| Parametre                                   | Açıklama |
+| --------------------------------------------| -------- |
+| setUsername                                 | Belirlenen kullanıcı adınız (bildirimi yapacak firmanın qnbfinansbank hesap bilgisi) |
+| setpassword                                 | Belirnenen şifreniz (bildirimi yapacak firmanın qnbfinansbank hesap bilgisi) |
+| setvergiTcKimlikNo                          | Vergi kimlik numaranız (bildirimi yapacak firmanın qnbfinansbank hesap bilgisi) |
+| setUrl                                      | E-Arşiv veya E-Fatura, (test veya canlı) Web Servis Url si (qnbfinansbank tarafından alınır.) |
+| getConfig                                   | Son olarak oluşturulan ayarların array olarak alıyoruz.  |
+
+## E-Fatura İşlemleri
 
 E-Faturaya bildirim işlemlerini yapabilmek için class ı çağırıyoruz ve set işlemlerine başlıyoruz.
 
+    <?php  
+    
+    $efatura = new \EFINANS\Libraries\efatura();
+    
+    $belgeNo=uniqid();
+    
+    $return= $efatura->setConfig($options)
+    ->setStart()
+    ->setBelgeNo($belgeNo)
+    ->setData($qnb_data)
+    ->setEFatura();
+    
+    print $return->belgeOid; /* e faturadan bildirim sonrası dönen key */
 
-## E-Arşiv İşlemleri (Hazırlanıyor..)
+**REQUEST Parameters:**
+
+| Parametre     | Açıklama |
+| --------------| -------- |
+| setConfig     | Yukarıda ayarladığımız ayar bilgileri gönderiyoruz. |
+| setStart      | Servise başlangıç tetiği veriyoruz.(ilgili ayarlara göre soap başlatır.) |
+| setBelgeNo    | Varitabanınızda fatura Id si veya uniq bir değer olabilir. |
+| setData       | Yukarıda ilk önce hazırladığıız datayı gönderiyoruz. |
+| setEFatura    | Son olarak E-Fatura bildirim servisini çalıştırıyoruz. |
+
+**RESPONSE Parameters:**
+
+| Parametre     | Açıklama |
+| --------------| -------- |
+| belgeOid      | Bildirim sonrası bize qnbfinansbank tarafından gönderilen benzersiz bildirim keyi bu keyi kullanarak e fatura sorgulama işlemi yapacağız. |
+
+
+## E-Arşiv İşlemleri
 
 E-Arşiv bildirim işlemlerini yapabilmek için class ı çağırıyoruz ve set işlemlerine başlıyoruz.
+
+    <?php  
+    
+    $earsiv = new \EFINANS\Libraries\earsiv();
+    
+    $return= $earsiv->setConfig($options)
+    ->setStart()
+    ->setSube("DFLT")
+    ->setKasa("DFLT")
+    ->setData($qnb_data)
+    ->setEArsiv();    
+
+    print '<pre>'; /* düzgün çıktı görseli için */
+    print_r($return);
+    
+
+**REQUEST Parameters:**
+
+| Parametre     | Açıklama |
+| --------------| -------- |
+| setConfig     | Yukarıda ayarladığımız ayar bilgileri gönderiyoruz. (eğer e arşiv için başka ayarlar varsa option değişkenini o ayarlara göre tekrar oluşturun.) |
+| setStart      | Servise başlangıç tetiği veriyoruz.(ilgili ayarlara göre soap başlatır.) |
+| setSube       | QNB Finansbank portal yapılandırma ayarlarında WEB SERVİS için tanımlanan Şube bilgisi |
+| setKasa       | QNB Finansbank portal yapılandırma ayarlarında WEB SERVİS için tanımlanan Kasa bilgisi |
+| setData       | Yukarıda ilk önce hazırladığıız datayı gönderiyoruz. |
+| setEArsiv     | Son olarak E-Arşiv bildirim servisini çalıştırıyoruz. |
+
+**RESPONSE Parameters:**
+
+| Parametre             | Açıklama |
+| ----------------------| -------- |
+| resultCode            | İşlemin durum kodu başarılı için (AE00000) diğer kodlar için dokümantasyon inceleyin. |
+| resultText            | İşlem sonucu mesajı |
+| resultExtra->entry    | Başarılı olduğunda dönen kullanabileceğiniz parametreler array şeklide döner. |
+|        --faturaURL    | entry arrayi içinde fatura url si |
+|        --uuid         | entry arrayi içinde gönderdiğinzi UUID bilgisi |
+|        --faturaNo     | entry arrayi içinde sizin bildirdiğiniz veya otomatik bildirilmesini istediğiniz fatura no örn. TMA202000000001  |
+
+
+## E-Fatura ve E-Arşiv Ek Methodlar
+
+E-Fatura veya E-Arşiv için ihtiyaca göre ek methodlar kullanabilirsiniz.
+
+#### - E-Fatura
+* **getFaturaNo()** : Portaldaki en son gönderilmiş fatura numaranıza göre sonraki fatura numarasını üretir.
+
+E-Fatura Numarası üretmek için <b>getFaturaNo()</b> Methodu ile geriye dönen değeri <b>$ID</b> değişkenine alıp başlangıç datasına gönderdiğimizde otomatik değil bizim gönderdiğimiz fatura No yu kabul eder. 
+
+    <?php      
+    
+     $efatura = new \EFINANS\Libraries\efatura();
+                
+     $ID= $efatura->setConfig($options)
+     ->setStart()
+     ->getFaturaNo("BASLANGIC_SERI_NO")  
+      
+**Parameters:**
+
+| Parametre                           | Açıklama |
+| ------------------------------------| -------- |
+| setConfig                           | Servis ayalarını set ediyoruz yukarıdaki gibi |
+| setStart                            | Servisi başlatıyoruz |
+| getFaturaNo                         | Fatura no üretmesi için başlangıç seri no gönderiyoruz örn. TRE |
+
+* **getEfaturaKullanicisi()** : İlgili kişinin vergi numarasından E-Fatura mükellefi olup olmadığı bilgisini getirir.
+  
+Hazırladığımı datanın E-Fatura ya mı E-Arşiv emi gönderecileceğini tespit etmek için  <b>getEfaturaKullanicisi()</b> methodu ile kontrol ediyoruz. Eğer (true veya 1) bir değer dönerse e fatura mükellefi demektir ve hazırladığımız datanın E-Fatura ya gönderileceği anlaşılmaktadır. Aksi durumda ise E-Arşive gönderebilirsiniz.
+
+    <?php      
+    
+     $efatura = new \EFINANS\Libraries\efatura();
+                
+     $ID= $efatura->setConfig($options)
+     ->setStart()
+     ->getEfaturaKullanicisi("VERGI_VEYA_TC_KIMLIK_NO")  
+      
+**Parameters:**
+
+| Parametre                           | Açıklama |
+| ------------------------------------| -------- |
+| setConfig                           | Servis ayalarını set ediyoruz yukarıdaki gibi |
+| setStart                            | Servisi başlatıyoruz |
+| getEfaturaKullanicisi               | E-Fatura mükellefimi değilmi öğrenebilmek için fatura sahibinin TC veya VERGİ KİMLİK NO su. |
+
+
+#### - E-Arşiv
+
+* **getFaturaNo()** : En Son üretilen e arşiv fatura nosu her çalıştığında otomatik olarak counter artarak döner.
+
+E-Arşiv Numarası üretmek için <b>getFaturaNo()</b> Methodu ile geriye dönen değeri <b>$ID</b> değişkenine alıp başlangıç datasına gönderdiğimizde otomatik değil bizim gönderdiğimiz fatura No yu kabul eder. E-Arşiv olduğu için her çalıştırıldığında yeni bir numara üretir. 
+
+    <?php      
+    
+    $earsiv = new \EFINANS\Libraries\earsiv();
+                
+     $ID= $earsiv->setConfig($options)
+     ->setStart()
+     ->setUuid($data->getUuid())
+     ->getFaturaNo("BASLANGIC_SERI_NO")  
+      
+**Parameters:**
+
+| Parametre                           | Açıklama |
+| ------------------------------------| -------- |
+| setConfig                           | Servis ayalarını set ediyoruz yukarıdaki gibi |
+| setStart                            | Servisi başlatıyoruz |
+| setUuid                             | Başlangıç datası hazırladığımızdaki uuid oluşturma işlemi bu uid le sonrasında e arşiv faturamınız bildireceğiz. |
+| getFaturaNo                         | Fatura no üretmesi için başlangıç seri no gönderiyoruz örn. TRA |
 
 
 ## Otomatik Bildirim İşlemleri (Hazırlanıyor..)
