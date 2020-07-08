@@ -4,7 +4,7 @@
   "type": "library",
   "homepage": "https://github.com/muhittingulap/qnbfinansbank",
   "keywords": ["efatura", "earşiv", "qnb","finansbank","php","api"],
-  "description": "QNB Finansbank E-Fatura ve E-Arşiv Api",
+  "description": "QNB Finansbank E-Fatura ve E-Arşiv PHP Api",
   "autoload": {
     "psr-4": {
       "EFINANS\\": "src"
