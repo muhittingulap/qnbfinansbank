@@ -60,7 +60,7 @@ E-Fatura ve E-Arşiv için ortak data hazılarması gerekmektedir. Aşağıdaki 
     $uuid=$data->getUuid();
     
     $veri = array(
-        "ID"" => "",
+        "ID" => "",
         "ProfileID" => "",
         "UUID" => $uuid,
         "IssueDate" => "",
@@ -109,7 +109,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
       $veri = array(
         "Party" => array(
             "WebsiteURI" => "",
-            "PartyIdentificationID" => ",
+            "PartyIdentificationID" => "",
             "PartyName" => "",
             "Telephone" => "",
             "Telefax" => "",
@@ -241,11 +241,11 @@ Bu adım da her satır için bu işlemi tekrarlamanız veya bir döngü içerisi
 #### - Datanın Son Halinin Alınması
 
 Bu adım da fatura satırlarından otomatik olarak  parasal toplamların ve vergisel toplamların heaplanıp, E-Arşiv ve E-Fatura ya gönderileck datanın son halinin, xml öncesi array datasının alıp bir değişkene atıyoruz ve artık bildirim aşamasına geçebiliriz.
-
+```php
     <?php  
        
     $qnb_data = $data->setTotals()->getData();
-
+```
 
 ## Servis Bağlantı İşlemleri
 
