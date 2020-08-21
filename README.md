@@ -249,7 +249,7 @@ Bu adım da fatura satırlarından otomatik olarak  parasal toplamların ve verg
 
 ## Servis Bağlantı İşlemleri
 
-Web servislerine bağlantı için TEST veya CANLI ortam username ve password bilgilerini tanımlıyoruz. Bu bilgiler qnbfinansbank tarafından alınır.
+Web servislerine bağlantı için TEST veya CANLI ortam username ve password bilgilerini tanımlıyoruz. Bu bilgiler qnbfinansbank tarafından alınır. Email atıp bilgileri alabilirsiniz.
 ```php
     <?php  
     
@@ -270,6 +270,11 @@ Web servislerine bağlantı için TEST veya CANLI ortam username ve password bil
 | setvergiTcKimlikNo                          | Vergi kimlik numaranız (bildirimi yapacak firmanın qnbfinansbank hesap bilgisi) |
 | setUrl                                      | E-Arşiv veya E-Fatura, (test veya canlı) Web Servis Url si (qnbfinansbank tarafından alınır.) |
 | getConfig                                   | Son olarak oluşturulan ayarların array olarak alıyoruz.  |
+
+####Test Url
+
+- E-Arşiv : https://earsivtest.efinans.com.tr/earsiv/ws/EarsivWebService?wsdl
+- E-Fatura : https://erpefaturatest.cs.com.tr:8443/efatura/ws/connectorService?wsdl
 
 ## E-Fatura İşlemleri
 
