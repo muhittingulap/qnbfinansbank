@@ -92,6 +92,19 @@ Her Bir Notu set ediyoruz. Notlar için dokümanı inceleyiniz.
     );
     $data->setAddNote($veri);
 ```
+
+Örnek:
+
+```php
+    // e faturada zorunluluk yoktur. e arşiv için zorunlu olduğundan aşağıdaki notu eklemeniz yeterlidir.
+    <?php     
+    
+    $veri = array(
+            "ID" => 1,
+            "Value" => "Gönderim Şekli: ELEKTRONIK",
+    );
+    $data->setAddNote($veri);
+```
 **Parameters:**
 
 | Parametre                    | Açıklama |
@@ -169,7 +182,7 @@ Aynı bu set işlemini 'Customer' içinde alıcı bilgilerini yazıp yapmalı ve
 #### - Ödeme Koşulları Girilmesi 
 
 Bilgi notu şeklinde girilemsi zorunlu değildir.
-
+```php
     <?php     
     
         $veri = array(
@@ -177,7 +190,7 @@ Bilgi notu şeklinde girilemsi zorunlu değildir.
            "PaymentDueDate" => "2020-07-30",
        );
        $data->setPaymentTerms($veri);
-
+```
 **Parameters:**
 
 | Parametre                    | Açıklama |
