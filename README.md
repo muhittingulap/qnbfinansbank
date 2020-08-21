@@ -271,7 +271,7 @@ Web servislerine bağlantı için TEST veya CANLI ortam username ve password bil
 | setUrl                                      | E-Arşiv veya E-Fatura, (test veya canlı) Web Servis Url si (qnbfinansbank tarafından alınır.) |
 | getConfig                                   | Son olarak oluşturulan ayarların array olarak alıyoruz.  |
 
-###Test Url
+Test Url
 
 - E-Arşiv : https://earsivtest.efinans.com.tr/earsiv/ws/EarsivWebService?wsdl
 - E-Fatura : https://erpefaturatest.cs.com.tr:8443/efatura/ws/connectorService?wsdl
