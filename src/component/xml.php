@@ -50,19 +50,19 @@ class xml
                 $child = $xml_data->addChild("$key", htmlspecialchars("$value"),'mglp1');
                 $prmval="";
 
-                if($enustkey && $this->xprms[$enustkey2][$enustkey]){
-                        if ($this->xprms[$enustkey2][$enustkey][$ustkey][$key]["name"]) {
+                if(isset($enustkey) && isset($this->xprms[$enustkey2][$enustkey])){
+                        if (isset($this->xprms[$enustkey2][$enustkey][$ustkey][$key]["name"])) {
                             $prmval = $this->xprms[$enustkey2][$enustkey][$ustkey][$key];
                         }
                 }else{
                       if ($ustkey) {
-                          if ($this->xprms[$ustkey][$key]["name"]) {
+                          if (isset($this->xprms[$ustkey][$key]["name"])) {
                               $prmval = $this->xprms[$ustkey][$key];
-                          } elseif ($this->xprms[$key]["name"]) {
+                          } elseif (isset($this->xprms[$key]["name"])) {
                               $prmval = $this->xprms[$key]["name"];
                           }
                       }else{
-                          if ($this->xprms[$key]["name"]) {
+                          if (isset($this->xprms[$key]["name"])) {
                               $prmval = $this->xprms[$key]["name"];
                           }
                       }
