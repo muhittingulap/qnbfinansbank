@@ -6,10 +6,25 @@ use EFINANS\Config\config;
 
 class earsiv extends config
 {
+    /** @var mixed */
+    protected $data;
+
+    /** @var mixed */
+    protected $parametre;
+
+    /** @var mixed */
+    protected $xml;
+
+    /** @var mixed */
+    protected $xmlData;
+
+    /** @var mixed */
+    protected $input;
 
     private $seriNo = "TR";
     private $sube = "MERKEZ";
     private $kasa = "MERKEZ";
+    private $erpKodu = "";
 
     private $faturaUuid = "";
     private $faturaNo = "";
@@ -71,6 +86,16 @@ class earsiv extends config
         return $this;
     }
 
+    public function seterpKodu($data)
+    {
+        /*
+         * $bn -> belge noyu set ediyoruz uniq bir id olmalı
+         * */
+        $this->erpKodu = $data;
+
+        return $this;
+    }
+
     public function setData($data = array())
     {
         /*
@@ -119,7 +144,7 @@ class earsiv extends config
     private function setDataXml()
     {
         $element = 'Invoice xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ../xsdrt/maindoc/UBL-Invoice-2.1.xsd" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:n4="http://www.altova.com/samplexml/other-namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"';
-        $this->xml = new \EFINANS\Component\xml($element);
+        $this->xml = new \EFINANS\component\xml($element);
 
         $this->setPrefix()->setEkData();
 
@@ -143,7 +168,7 @@ class earsiv extends config
 
             $r = $this->api->faturaNoUret($this->parametre);
             $this->return = $r->output;
-        } catch (Exception $e) {
+        } catch (\Exception  $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -158,6 +183,7 @@ class earsiv extends config
                 "vkn" => $this->vergiTcKimlikNo,
                 "sube" => $this->sube,
                 "kasa" => $this->kasa,
+                'erpKodu' =>  $this->erpKodu,
             );
 
             if (!$this->data["cbc:ID"]) { /* eğer fatura no gönderilmemişse otomatik üretilmesi için kullanıyoruz */
@@ -174,7 +200,7 @@ class earsiv extends config
 
             $r = $this->api->faturaOlustur($this->parametre);
             $this->return = $r->return;
-        } catch (Exception $e) {
+        } catch (\Exception  $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -195,7 +221,24 @@ class earsiv extends config
 
             $r = $this->api->faturaSorgula($this->parametre);
             $this->return=$r;
-        } catch (Exception $e) {
+        } catch (\Exception  $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
+    }
+
+    public function gidenBelgeleriIndir($uuid="")
+    {
+        try {
+            $this->parametre = array(
+                "uuidList" => [$uuid],
+                "belgeFormati" => $this->belgeFormati,
+                "tasinanFaturalar" => 0
+
+            );
+            $r = $this->api->faturaZipiAl($this->parametre);
+            $this->return = $r;
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -216,7 +259,25 @@ class earsiv extends config
 
             $r = $this->api->faturaIptalEt($this->parametre);
             $this->return=$r->return;
-        } catch (Exception $e) {
+        } catch (\Exception  $e) {
+            $this->errors[__FUNCTION__][0] = $e;
+        }
+        return $this->return;
+    }
+
+    public function yapilandirmaAyarlariAl(){
+        try {
+            $this->input = array(
+                "vkn" => $this->vergiTcKimlikNo,
+            );
+
+            $this->parametre = array(
+                "input" => json_encode($this->input),
+            );
+
+            $r = $this->api->yapilandirmaAyarlariAl($this->parametre);
+            $this->return=$r->return;
+        } catch (\Exception  $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -234,4 +295,8 @@ class earsiv extends config
         exit;
     }
 
+    public function getErrors($function)
+    {
+        return $this->errors[$function] ?? [];
+    }
 }

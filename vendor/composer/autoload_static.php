@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4
 {
+    public static $files = array (
+        '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'E' => 
         array (
@@ -17,7 +21,12 @@ class ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4
         'EFINANS\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+            1 => __DIR__ . '/../..' . '/src',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -25,6 +34,7 @@ class ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0ff8df18244f285b3ae5f5fac1261ce4::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -6,8 +6,24 @@ use EFINANS\Config\config;
 
 class efatura extends config
 {
+    /** @var mixed */
+    protected $parametre;
+
+    /** @var mixed */
+    protected $xml;
+
+    /** @var mixed */
+    protected $xmlData;
+
+    /** @var mixed */
+    protected $input;
+
+    /** @var mixed */
+    protected $belgeNo;
+
     private $data = array();
     private $belgeFormati = "";
+    private $erpKodu = "";
 
     public function __construct()
     {
@@ -39,6 +55,15 @@ class efatura extends config
         return $this;
     }
 
+    public function seterpKodu($data)
+    {
+        /*
+         * $bn -> belge noyu set ediyoruz uniq bir id olmalı
+         * */
+        $this->erpKodu = $data;
+
+        return $this;
+    }
 
     public function setData($data = array())
     {
@@ -67,12 +92,13 @@ class efatura extends config
 
     private function setDataXml()
     {
-        $element = 'Invoice xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ../xsdrt/maindoc/UBL-Invoice-2.1.xsd" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:n4="http://www.altova.com/samplexml/other-namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"';
-        $this->xml = new \EFINANS\Component\xml($element);
+        $element = 'Invoice xsi:schemaLocation="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 ../xsdrt/maindoc/UBL-Invoice-2.1.xsd" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"';
+        $this->xml = new \EFINANS\component\xml($element);
 
         $this->setPrefix();
 
         $this->xmlData = $this->xml->setParams($this->data, $this->prefix)->getFaturaSablonXml();
+
         return $this;
     }
 
@@ -87,7 +113,7 @@ class efatura extends config
 
             $r = $this->api->faturaNoUret($this->parametre);
             $this->return = $r->return;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -96,19 +122,20 @@ class efatura extends config
     public function setEFatura()
     {
         try {
-            $this->parametre = array(
-                "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
-                "belgeTuru" => "FATURA_UBL",
-                "belgeNo" => $this->belgeNo,
-                "veri" => $this->xmlData,
-                "belgeHash" => md5($this->xmlData),
-                "mimeType" => "application/xml",
-                "belgeVersiyon" => "3.0",
-            );
+            $this->return = $this->api->belgeGonderExt([
+            'parametreler' => [
+                'belgeNo' => $this->belgeNo,
+                'vergiTcKimlikNo' => $this->vergiTcKimlikNo,
+                'belgeTuru' => 'FATURA_UBL',
+                'veri' => $this->xmlData,
+                'belgeHash' => md5($this->xmlData),
+                'mimeType' => 'application/xml',
+                'belgeVersiyon' => '3.0',
+                'erpKodu' =>  $this->erpKodu,
+            ]
+        ]);
 
-            $this->return = $this->api->belgeGonder($this->parametre);
-
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -124,7 +151,7 @@ class efatura extends config
             );
             $r = $this->api->gidenBelgeDurumSorgula($this->parametre);
             $this->return = $r->return;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -135,14 +162,14 @@ class efatura extends config
         try {
             $this->parametre = array(
                 "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
-                "belgeOidListesi" => $belgeOid,
+                "belgeOidListesi" => [$belgeOid],
                 "belgeTuru" => "FATURA",
                 "belgeFormati" => $this->belgeFormati,
 
             );
             $r = $this->api->gidenBelgeleriIndir($this->parametre);
             $this->return = $r;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $this->return;
@@ -153,14 +180,15 @@ class efatura extends config
         try {
             $this->parametre = array(
                 "parametreler" => array(
-                    "baslangicGonderimTarihi" => "20200601",
-                    "bitisGonderimTarihi" => "20200630",
+                    "baslangicGonderimTarihi" => "20251001",
+                    "bitisGonderimTarihi" => "20251030",
                     "belgeTuru" => "FATURA",
                     "vkn" => $this->vergiTcKimlikNo,
+                    'erpKodu' =>  $this->erpKodu,
                 ),
             );
             $r = $this->api->gidenBelgeleriListele($this->parametre);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
         return $r;
@@ -168,20 +196,6 @@ class efatura extends config
 
     public function gelenBelgeleriListele()
     {
-        /* example response
-         [0] => stdClass Object
-                        (
-                            [belgeNo] => TMA2020000000002
-                            [belgeSiraNo] => 2
-                            [belgeTarihi] => 20200610
-                            [belgeTuru] => FATURA
-                            [ettn] => 4BAF0887-FF0F-4093-9B65-CB6FBE348A72
-                            [gonderenEtiket] => urn:mail:efinansgb@cs.com.tr
-                            [gonderenVknTckn] => 8720616074
-                        )
-
-        */
-
         try {
             $this->parametre = array(
                 "vergiTcKimlikNo" => $this->vergiTcKimlikNo,
@@ -189,7 +203,7 @@ class efatura extends config
                 "belgeTuru" => "FATURA",
             );
             $r = $this->api->gelenBelgeleriListele($this->parametre);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
 
@@ -204,7 +218,7 @@ class efatura extends config
             );
             $r = $this->api->efaturaKullanicisi($this->parametre);
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
 
@@ -223,9 +237,8 @@ class efatura extends config
         exit;
     }
 
-    public function getErrors()
+    public function getErrors($function)
     {
-        /* çalıştırılan methoddaki hataları döner*/
-        return $this->errors;
+        return $this->errors[$function] ?? [];
     }
 }

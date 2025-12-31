@@ -6,7 +6,12 @@ class xml
 {
     private $params = array();
     private $xprms = array();
-    private $xml = array();
+
+    /** @var mixed */
+    protected $xml;
+
+    /** @var mixed */
+    protected $return;
 
     public function __construct($element)
     {

@@ -11,7 +11,7 @@ class config
     protected $vergiTcKimlikNo = "";
 
     protected $context = "";
-    protected $soapOptions = "";
+    protected $soapOptions = array();
     protected $errors = array();
     protected $return = array();
 
@@ -155,12 +155,12 @@ class config
                     'allow_self_signed' => true
                 ]
             ]);
-            $this->soapOptions = array('encoding' => 'UTF-8', "trace" => 1, "exceptions" => 1, 'stream_context' => $this->context);
+            $this->soapOptions = array('encoding' => 'UTF-8', "trace" => 1, "\Exception s" => 1, 'stream_context' => $this->context);
 
             $this->api = new \SoapClient($this->url, $this->soapOptions);
             $this->api->__setSoapHeaders($this->soapClientWSSecurityHeader());
 
-        } catch (Exception $e) {
+        } catch (\Exception  $e) {
             $this->errors[__FUNCTION__][0] = $e;
         }
 
